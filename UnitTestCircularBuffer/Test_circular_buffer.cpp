@@ -48,16 +48,20 @@ TEST_F(Test_circular_buffer, back)
 	EXPECT_EQ(5, sut.back());
 }
 
-TEST_F(Test_circular_buffer, at)
+TEST_F(Test_circular_buffer, access)
 {
 	*(sut.data() + 0) = 11;
 	*(sut.data() + 1) = 22;
 	*(sut.data() + 2) = 33;
 	*(sut.data() + 3) = 44;
 	EXPECT_EQ(11, sut.at(0));
+	EXPECT_EQ(11, sut[0]);
 	EXPECT_EQ(22, sut.at(1));
+	EXPECT_EQ(22, sut[1]);
 	EXPECT_EQ(33, sut.at(2));
+	EXPECT_EQ(33, sut[2]);
 	EXPECT_EQ(44, sut.at(3));
+	EXPECT_EQ(44, sut[3]);
 }
 
 TEST_F(Test_circular_buffer, invalidIndexShallThrow)
@@ -91,6 +95,36 @@ TEST_F(Test_circular_buffer, push_back)
 	EXPECT_EQ(44, sut.back());
 }
 
+TEST_F(Test_circular_buffer, clear)
+{
+	sut.push_back(11);
+	sut.push_back(11);
+	sut.push_back(11);
+	sut.push_back(11);
+	sut.clear();
+	EXPECT_EQ(0, sut[0]);
+	EXPECT_EQ(0, sut[1]);
+	EXPECT_EQ(0, sut[2]);
+	EXPECT_EQ(0, sut[3]);
+}
+
+TEST_F(Test_circular_buffer, fillAll)
+{
+	sut.fill(55);
+	EXPECT_EQ(55, sut[0]);
+	EXPECT_EQ(55, sut[1]);
+	EXPECT_EQ(55, sut[2]);
+	EXPECT_EQ(55, sut[3]);
+}
+
+TEST_F(Test_circular_buffer, swap)
+{
+	sut.fill(55);
+	EXPECT_EQ(55, sut[0]);
+	EXPECT_EQ(55, sut[1]);
+	EXPECT_EQ(55, sut[2]);
+	EXPECT_EQ(55, sut[3]);
+}
 TEST_F(Test_circular_buffer, beginIterator)
 {
 	*sut.data() = 99;
@@ -103,14 +137,14 @@ TEST_F(Test_circular_buffer, endIterator)
 	EXPECT_EQ(99, *sut.end());
 }
 
-TEST_F(Test_circular_buffer, reverseBeginIterator)
-{
-	*(sut.data() + 3) = 99;
-	EXPECT_EQ(99, *sut.rbegin());
-}
-
-TEST_F(Test_circular_buffer, reverseEndIterator)
-{
-	*sut.data() = 99;
-	EXPECT_EQ(99, *sut.rend());
-}
+//TEST_F(Test_circular_buffer, reverseBeginIterator)
+//{
+//	*(sut.data() + 3) = 99;
+//	EXPECT_EQ(99, *sut.rbegin());
+//}
+//
+//TEST_F(Test_circular_buffer, reverseEndIterator)
+//{
+//	*sut.data() = 99;
+//	EXPECT_EQ(99, *sut.rend());
+//}
